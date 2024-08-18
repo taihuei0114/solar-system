@@ -15,7 +15,7 @@ jobs:
             nodejs_version: [18,19,20]
             operating_system: [ubuntu-latest,macos-latest]
             exclude:
-              - nodejs_version: 18
+              - nodejs_version: 18ß
                 operating_system: macos-latest
         runs-on: ${{ matrix.operating_system }}
         steps:
@@ -26,7 +26,13 @@ jobs:
           uses: actions/setup-node@v3
           with:
             node-version: ${{ matrix.nodejs_version}}
-    
+        
+        - name: Cache NPM Dependencies
+          uses: actions/cache@v3
+          with:
+            path: node_modules
+            key: ${{ runner.os}}-node-modules=${{ hashFiles('package-lock.json')}}
+       
         - name: Install Dependencies
           run: npm install
     
